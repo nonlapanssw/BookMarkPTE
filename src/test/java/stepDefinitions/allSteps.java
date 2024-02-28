@@ -1,13 +1,11 @@
 package stepDefinitions;
 
 import io.cucumber.java.en.*;
-import org.junit.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.*;
 import org.openqa.selenium.support.ui.*;
 
 import java.time.*;
-import java.util.*;
 
 public class allSteps {
 
@@ -15,7 +13,6 @@ public class allSteps {
     WebDriver driver = null;
     int waitShort = 60;
     String remoteAllowOrigin = "--remote-allow-origins=*";
-    String expectedTitleName = "WorldTicket";
     String chromeDriver = "webdriver.chrome.driver";
     String path = "/src/test/resources/drivers/chromedriver";
     String userDir = System.getProperty("user.dir");
@@ -31,7 +28,7 @@ public class allSteps {
 
     final String signInButton = "//input[@id='sign-in-btn']";
 
-    final String predic_tested = "//*[@data-tracking-event='practice_or_predic_click_tested']";
+    final String predic_tested ="//*[@data-tracking-event='practice_or_predic_click_tested']/span";
 
 
 
@@ -54,6 +51,7 @@ public class allSteps {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(waitShort));
 
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath(login)));
+
         driver.findElement(By.xpath(login)).click();
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(usernameInput)));
@@ -69,12 +67,15 @@ public class allSteps {
     @When("User go to Reading & Writing：Fill in the blanks")
     public void goToReadingWritingFillInTheBlanks() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(waitShort));
-        driver.navigate().to("https://www.apeuni.com/en/practice/fib_wr/74");
+        driver.navigate().to("https://www.apeuni.com/en/practice/fib_wr/140");
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(predic_tested)));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@class='ant-select-selection__rendered']")));
+        WebElement predic = driver.findElement(By.xpath(predic_tested));
 
-        System.out.println(driver.findElement(By.xpath(predic_tested)).getText());
-
+        int tested = predic.getText().length();
+        if (tested == 11){
+            System.out.println(predic.getText().substring(8,10));
+        }
 
     }
 }
